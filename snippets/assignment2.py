@@ -17,8 +17,8 @@ while H > 0:
     T = T + t # наш интервал времени прошел
     
     # Печатаем только для каждой секунды
-    if (abs(T - round(T)) <= t / 2):
-        print ('T=' + str(T) + " s;" + " H=" + str(H) + " m;" + str(V) + " m/s;" + str(g) + " m/s^2")
+    if (abs(T - round(T)) <= (t / 2)):
+        print ('T=' + str(T) + " s;" + " H=" + str(H) + " m;" + " V=" + str(V) + " m/s;" + " g=" + str(g) + " m/s^2")
 
 № Печатаем когда уже под поверхностью или на ней
-print ('T=' + str(T) + " s;" + " H=" + str(H) + " m;" + str(V) + " m/s;" + str(g) + " m/s^2")
+print ('T=' + str(T) + " s;" + " H=" + str(H) + " m;" + " V=" + str(V) + " m/s;" + " g=" + str(g) + " m/s^2")
