@@ -66,13 +66,11 @@ while (run):
             V = V + a * t
             H = H + V * t
             T = T + t
-#            if (abs(T - round(T)) <= t / 2):
-#                print ('T=' + str(T) + " s;" + " Mf=" + str(Mf) + " H=" + str(H) + " m;" + " V=" + str(V) + " m/s;" + " a=" + str(a) + " m/s^2")
         else:
             run = False
             if (abs(V) > 7.5):
                 img = imgB
-#            break
+
     screen.blit(bg, (0, 0))
     screen.blit(img, coord((240, int(H * 768 / 400000)+68)))
     screen.blit(font.render('Height:' + str("%.2f" % round(H,2) + 'm'), True, WHITE), (200, 50))
@@ -82,7 +80,9 @@ while (run):
     pygame.display.flip()
     pygame.time.wait(10)
 
-#    print ('T=' + str(T) + " s;" + " Mf=" + str(Mf) + " H=" + str(H) + " m;" + " V=" + str(V) + " m/s;" + " a=" + str(a) + " m/s^2")
+while (True):
+    event = pygame.event.wait()
+    if event.type == pygame.QUIT:
+        break
 
-pygame.time.wait(1000)
 pygame.quit()
