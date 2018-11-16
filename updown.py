@@ -1,6 +1,6 @@
 import pygame
 
-SCREEN_SIZE = [1024,768]
+SCREEN_SIZE = [800,600]
 
 def coord(xy):
     global SCREEN_SIZE
@@ -17,7 +17,7 @@ BLACK = [  0,  0,  0]
 pygame.display.init()
 pygame.font.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
-bg = pygame.image.load("back.jpg")
+bg = pygame.image.load('back.jpg')
 bg = pygame.transform.scale(bg, SCREEN_SIZE)
 imgF = pygame.image.load('rocket4sf.png').convert_alpha()
 imgNF = pygame.image.load('rocket4s.png').convert_alpha()
@@ -38,25 +38,39 @@ T = 0
 H = 0
 V = 0
 Md = 4600
-Mf = 2000
-Ft = 15000
+Mf = 1000
+Ft = 45000
 Vf = 3050
-Mt = Ft / Vf
+Kt = 1
 
+clock=pygame.time.Clock()
 run = True
 while (run):
+    dt = clock.tick(100)
     event = pygame.event.poll()
     if event.type == pygame.QUIT:
         run = False
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_SPACE:
+            if Kt > 0:
+                Kt = 0
+            else:
+                Kt = 1
+
     screen.fill(WHITE)
 
-    for i in range(1,100):
+    for i in range(1,int(dt/10)+1):
+        Fte = Ft* Kt
+        Mt = Fte / Vf
         if H >= 0:
             Ma = Md + Mf
             if (Mf > (Mt*t)):
                 Mf = Mf - Mt * t
-                ae = Ft/Ma
-                img = imgF
+                ae = Fte/Ma
+                if Kt > 0:
+                    img = imgF
+                else:
+                    img = imgNF
             else:
                 ae = 0
                 img = imgNF
@@ -68,17 +82,18 @@ while (run):
             T = T + t
         else:
             run = False
-            if (abs(V) > 7.5):
+            if (abs(V) > 10):
                 img = imgB
 
     screen.blit(bg, (0, 0))
-    screen.blit(img, coord((240, int(H * 768 / 400000)+68)))
-    screen.blit(font.render('Height:' + str("%.2f" % round(H,2) + 'm'), True, WHITE), (200, 50))
-    screen.blit(font.render('Velocity:' + str("%.2f" % round(V, 2) + 'm/s'), True, WHITE), (200, 100))
-    screen.blit(font.render('Acceleration:' + str("%.2f" % round(a, 2) + 'm/s^2'), True, WHITE), (200, 150))
-    screen.blit(font.render('Fuel:' + str("%.2f" % round(Mf, 2) + 'kg'), True, WHITE), (200, 200))
+    screen.blit(img, coord((SCREEN_SIZE[0]/2, int(H * SCREEN_SIZE[1] / 5000)+56)))
+    screen.blit(font.render('Height  : ' + '{:>7.0f}'.format(H) + ' m', True, WHITE), (25, 25))
+    screen.blit(font.render('Velocity: ' + '{:>7.2f}'.format(V) + ' m/s', True, WHITE), (25, 50))
+    screen.blit(font.render('Accel.  : ' + '{:>7.2f}'.format(a) + ' m/s^2', True, WHITE), (25, 75))
+    screen.blit(font.render('Fuel    : ' + '{:>7.0f}'.format(Mf) + ' kg', True, WHITE), (25, 100))
+    screen.blit(font.render('T/W     : ' + '{:>7.2f}'.format(-ae/g), True, WHITE), (25, 125))
+    screen.blit(font.render('Time    : ' + '{:>7.0f}'.format(T) + ' s', True, WHITE), (25, 150))
     pygame.display.flip()
-    pygame.time.wait(10)
 
 while (True):
     event = pygame.event.wait()
